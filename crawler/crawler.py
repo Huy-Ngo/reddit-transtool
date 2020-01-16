@@ -1,11 +1,10 @@
 import praw
-from flask import Flask
 from json import load
+from http import HTTPStatus
 
-app = Flask(__name__)
+# eo8zee
 
-
-with open('secret.json', 'r') as f:
+with open('./crawler/secret/secret.json', 'r') as f:
     data = load(f)
     client_id = data['client_ID']
     client_secret = data['client_secret']
@@ -34,9 +33,17 @@ def traverse(comment, n_tab):
     return cmt
 
 
-@app.route('/<post_id>')
-def index(post_id):
-    submission = reddit.submission(id=post_id)
+def crawl(post_id=None, url=None):
+    if post_id is not None:
+        submission = reddit.submission(id=post_id)
+    elif url is not None:
+        submission = reddit.submission(url=url)
+    else:
+        return {
+            'status': HTTPStatus.BAD_REQUEST,
+            'message': 'Bad Request',
+            'details': 'No url or post id inserted'
+        }
     post_info = {
         'title': submission.title,
         'text': submission.selftext,
