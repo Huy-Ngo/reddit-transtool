@@ -1,6 +1,12 @@
 import praw
 from json import load
 from http import HTTPStatus
+import functools
+
+from flask import (
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
+)
+
 
 # eo8zee
 
@@ -11,6 +17,8 @@ with open('./crawler/secret/secret.json', 'r') as f:
 
 reddit = praw.Reddit(user_agent='Comment Extraction (by /u/Huy_Ngo)',
                      client_id=client_id, client_secret=client_secret)
+
+bp = Blueprint('api', __name__, url_prefix='/api')
 
 
 def traverse(comment, n_tab):
@@ -33,11 +41,10 @@ def traverse(comment, n_tab):
     return cmt
 
 
-def crawl(post_id=None, url=None):
+@bp.route('/<post_id>', methods=['GET'])
+def crawl(post_id=None):
     if post_id is not None:
         submission = reddit.submission(id=post_id)
-    elif url is not None:
-        submission = reddit.submission(url=url)
     else:
         return {
             'status': HTTPStatus.BAD_REQUEST,
@@ -60,3 +67,9 @@ def crawl(post_id=None, url=None):
         cm = comment_queue.pop(0)
         post_info['comments'].append(traverse(cm, 0))
     return post_info
+
+
+@bp.route('/<path:url>', methods=['GET'])
+def crawl_by_url(url):
+    submission = reddit.submission(url=url)
+    return redirect(url_for('api.crawl', post_id=submission.id))

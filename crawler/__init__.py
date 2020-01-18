@@ -1,7 +1,5 @@
 import os
 
-from .crawler import crawl
-
 from flask import Flask
 
 
@@ -26,8 +24,7 @@ def create_app(test_config=None):
     def index():
         return ''
 
-    @app.route('/<post_id>')
-    def crawl_by_id(post_id):
-        return crawl(post_id)
+    from . import api
+    app.register_blueprint(api.bp)
 
     return app
