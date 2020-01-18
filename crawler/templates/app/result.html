@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    Reddit post
+{% endblock %}
+
+{% block content %}
+    <div id="meta">
+        r/{{ post['subreddit'] }} <br>
+        {{ post['title'] }} <br>
+        Posted by u/{{ post['author'] }} <br>
+        {{ post['points'] }} points
+    </div>
+    <hr>
+    <div id="text">
+        {{ post['text'] }}
+    </div>
+    <hr>
+    <div id="comments">
+        {% for comment in post['comments'] recursive %}
+            u/{{ comment['author'] }} <br>
+            {{ comment['text'] }} <br>
+            {% if comment.replies %}
+                {{ loop.depth * '>' }}
+                {{ loop(comment.replies) }}
+            {% endif %}
+        {% endfor %}
+    </div>
+
+{% endblock %}

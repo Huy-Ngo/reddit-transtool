@@ -20,11 +20,10 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/')
-    def index():
-        return ''
-
     from . import api
     app.register_blueprint(api.bp)
+
+    from . import crawler_app as craw
+    app.register_blueprint(craw.bp)
 
     return app

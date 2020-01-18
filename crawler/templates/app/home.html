@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    Home page
+{% endblock %}
+
+{% block content %}
+    <div>
+        Input the post URL or id
+    </div>
+    <form method="post">
+        <label for="id">Post ID</label>
+        <input name="id" id="id">
+        <label for="url">Post URL</label>
+        <input name="url" id="url">
+    </form>
+{% endblock %}
