@@ -19,3 +19,8 @@ def index():
 def result(post_id):
     post = crawl(post_id)
     return render_template('app/translate.html', post=post)
+
+
+@bp.route('/submit/', methods=['POST'])
+def submit():
+    return request.form['meta-trans']

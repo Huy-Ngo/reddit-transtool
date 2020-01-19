@@ -29,10 +29,11 @@ def traverse(comment, n_tab):
     :return: None
     """
     cmt = {
-        'author': comment.author.name,
+        'author': comment.author.name if comment.author else '[removed]',
         'points': comment.score,
         'text': markdown(comment.body),
-        'replies': []
+        'replies': [],
+        'id': comment.id
     }
     if comment.replies:
         for reply in comment.replies:
