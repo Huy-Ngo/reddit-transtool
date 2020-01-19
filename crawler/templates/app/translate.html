@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    Reddit post
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form>
+            <div id="meta" class="row">
+                <div class="col">
+                    r/{{ post['subreddit'] }} <br>
+                    {{ post['title'] }} <br>
+                    Posted by u/{{ post['author'] }} <br>
+                    {{ post['points'] }} points <br>
+                    Link: https://redd/it/{{ post.id }}
+                </div>
+                <div class="col">
+                    <textarea id="meta-trans" style="width: 100%;height: 100%"></textarea>
+                </div>
+            </div>
+            <hr>
+            <div id="text" class="row">
+                <div class="col">
+                    {{ post['text'] | safe }}
+                </div>
+                <div class="col">
+                    <textarea id="meta-trans" style="width: 100%;height: 100%"></textarea>
+                </div>
+            </div>
+            <hr>
+            <div id="comments">
+                {% for comment in post['comments'] recursive %}
+                    <div class="row">
+                        <div class="comment col">
+                            {{ loop.depth0 * '>' }} u/{{ comment['author'] }} <br>
+                            {{ comment['text'] | safe }} <br>
+                        </div>
+                        <div class="col">
+                            <textarea id="meta-trans" style="width: 100%;height: 100%"></textarea>
+                        </div>
+                    </div>
+                    {% if comment.replies %}
+                        <div class="reply">
+                            {{ loop(comment.replies) }}
+                        </div>
+                    {% endif %}
+
+                    {% if loop.depth == 1 %}
+                        <hr>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <button type="submit" class="btn btn-primary btn-block btn-lg" formmethod="post">
+                Render
+            </button>
+        </form>
+    </div>
+
+{% endblock %}

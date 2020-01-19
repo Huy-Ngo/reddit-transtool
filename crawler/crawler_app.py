@@ -18,4 +18,4 @@ def index():
 @bp.route('/<post_id>')
 def result(post_id):
     post = crawl(post_id)
-    return render_template('app/result.html', post=post)
+    return render_template('app/translate.html', post=post)

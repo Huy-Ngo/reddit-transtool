@@ -2,11 +2,10 @@ import praw
 from json import load
 from http import HTTPStatus
 import functools
-
+from markdown import markdown
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-
 
 # eo8zee
 
@@ -32,7 +31,7 @@ def traverse(comment, n_tab):
     cmt = {
         'author': comment.author.name,
         'points': comment.score,
-        'text': comment.body,
+        'text': markdown(comment.body),
         'replies': []
     }
     if comment.replies:
@@ -53,13 +52,14 @@ def crawl(post_id=None):
         }
     post_info = {
         'title': submission.title,
-        'text': submission.selftext,
+        'text': markdown(submission.selftext),
         'author': submission.author.name,
         'subreddit': submission.subreddit.display_name,
         'points': submission.score,
         'id': submission.id,
         'n_comments': submission.num_comments,
         'comments': [],
+        'url': submission.url
     }
     submission.comments.replace_more(limit=None)
     comment_queue = submission.comments[:]  # Seed with top-level
