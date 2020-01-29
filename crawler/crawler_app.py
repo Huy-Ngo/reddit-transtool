@@ -4,7 +4,8 @@ import functools
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from wtforms import TextAreaField
+
+from json import loads
 from .api import crawl, id_from_url
 
 bp = Blueprint('app', __name__, url_prefix='/app')
@@ -17,16 +18,21 @@ def index():
         url = request.form['url']
         if post_id == '':
             post_id = id_from_url(url)
-        return redirect(url_for('app.result', post_id=post_id))
+        return redirect(url_for('app.translate', post_id=post_id))
     return render_template('app/home.html')
 
 
 @bp.route('/<post_id>')
-def result(post_id):
+def translate(post_id):
     post = crawl(post_id)
     return render_template('app/translate.html', post=post)
 
 
-@bp.route('/submit/', methods=['POST'])
-def submit():
-    return request.form
+@bp.route('/result/', methods=['POST'])
+def result():
+    s = request.args['post_id']
+    post = crawl(s)
+    comments = post['forest']  # It's a forest, can be reduced to optimize
+    from flask import jsonify
+    # TODO: from the comment forest, rebuild post translate
+    return jsonify(comments)

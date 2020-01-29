@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="container">
-        <form action="{{ url_for('app.submit') }}" method="post">
+        <form action="{{ url_for('app.result', post_id=post['id']}}" method="post">
             <div id="meta">
                 r/{{ post['subreddit'] }} <br>
                 Posted by u/{{ post['author'] }} <br>
@@ -32,7 +32,7 @@
                             {{ comment['text'] | safe }} <br>
                         </div>
                         <div class="col">
-                            <textarea class="cmt-trans" id="trans-{{ comment.id }}" style="width: 100%;height: 100%"></textarea>
+                            <textarea class="cmt-trans" name="trans-{{ comment.id }}" id="trans-{{ comment.id }}" style="width: 100%;height: 100%"></textarea>
                         </div>
                     </div>
                     {% if comment.replies %}
