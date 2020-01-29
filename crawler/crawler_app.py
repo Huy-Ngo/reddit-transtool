@@ -4,14 +4,21 @@ import functools
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-
+from wtforms import TextAreaField
 from .api import crawl, crawl_by_url
 
 bp = Blueprint('app', __name__, url_prefix='/app')
 
 
-@bp.route('/')
+@bp.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        post_id = request.form['post-id']
+        url = request.form['url']
+        if post_id == '':
+            post = crawl_by_url(url)
+            post_id = post['id']
+        return redirect(url_for('app.result', post_id=post_id))
     return render_template('app/home.html')
 
 
@@ -23,4 +30,4 @@ def result(post_id):
 
 @bp.route('/submit/', methods=['POST'])
 def submit():
-    return request.form['meta-trans']
+    return request.form

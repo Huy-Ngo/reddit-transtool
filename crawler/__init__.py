@@ -20,6 +20,12 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    from flask import redirect, url_for
+
+    @app.route('/')
+    def re_index():
+        return redirect(url_for('app.index'))
+
     from . import api
     app.register_blueprint(api.bp)
 
