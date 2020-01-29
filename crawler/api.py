@@ -20,6 +20,11 @@ reddit = praw.Reddit(user_agent='Comment Extraction (by /u/Huy_Ngo)',
 bp = Blueprint('api', __name__, url_prefix='/api')
 
 
+def id_from_url(url):
+    submission = reddit.submission(url=url)
+    return submission.id
+
+
 def traverse(comment, n_tab):
     """
     This will use pre-order tree traversal for comment viewing,

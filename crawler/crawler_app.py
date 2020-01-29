@@ -5,7 +5,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from wtforms import TextAreaField
-from .api import crawl, crawl_by_url
+from .api import crawl, id_from_url
 
 bp = Blueprint('app', __name__, url_prefix='/app')
 
@@ -16,8 +16,7 @@ def index():
         post_id = request.form['post-id']
         url = request.form['url']
         if post_id == '':
-            post = crawl_by_url(url)
-            post_id = post['id']
+            post_id = id_from_url(url)
         return redirect(url_for('app.result', post_id=post_id))
     return render_template('app/home.html')
 
