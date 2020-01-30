@@ -11,6 +11,14 @@ from .api import crawl, id_from_url
 bp = Blueprint('app', __name__, url_prefix='/app')
 
 
+def traverse_and_copy(original, translations):
+    """This takes the original comment thread and translations
+    then output the translated comment thread
+    """
+    translated_thread = []
+    pass
+
+
 @bp.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -32,7 +40,8 @@ def translate(post_id):
 def result():
     s = request.args['post_id']
     post = crawl(s)
-    comments = post['forest']  # It's a forest, can be reduced to optimize
+    comments = post['comments']  # It's a forest, can be reduced to optimize
     from flask import jsonify
+    translations = request.form
     # TODO: from the comment forest, rebuild post translate
     return jsonify(comments)

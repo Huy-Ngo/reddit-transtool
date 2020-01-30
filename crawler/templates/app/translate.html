@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="container">
-        <form action="{{ url_for('app.result', post_id=post['id']}}" method="post">
+        <form action="{{ url_for('app.result', post_id=post['id']) }}" method="post">
             <div id="meta">
                 r/{{ post['subreddit'] }} <br>
                 Posted by u/{{ post['author'] }} <br>

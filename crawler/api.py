@@ -40,16 +40,11 @@ def traverse(comment, n_tab):
         'replies': [],
         'id': comment.id
     }
-    forest = {
-        'id': comment.id,
-        'replies': []
-    }
     if comment.replies:
         for reply in comment.replies:
-            rep, rep_forest = traverse(reply, n_tab + 1)
+            rep = traverse(reply, n_tab + 1)
             cmt['replies'].append(rep)
-            forest['replies'].append(rep_forest)
-    return cmt, forest
+    return cmt
 
 
 @bp.route('/<post_id>', methods=['GET'])
@@ -71,16 +66,14 @@ def crawl(post_id=None):
         'id': submission.id,
         'n_comments': submission.num_comments,
         'comments': [],
-        'forest': [],
         'url': submission.url
     }
     submission.comments.replace_more(limit=None)
     comment_queue = submission.comments[:]  # Seed with top-level
     while comment_queue:
         cm = comment_queue.pop(0)
-        cmts, frst = traverse(cm, 0)
+        cmts = traverse(cm, 0)
         post_info['comments'].append(cmts)
-        post_info['forest'].append(frst)
     return post_info
 
 
