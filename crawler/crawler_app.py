@@ -1,11 +1,7 @@
-from http import HTTPStatus
-import functools
-
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, redirect, render_template, request, url_for
 )
 
-from json import loads
 from .api import crawl, id_from_url
 
 bp = Blueprint('app', __name__, url_prefix='/app')

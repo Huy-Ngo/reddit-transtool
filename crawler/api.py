@@ -1,10 +1,9 @@
 import praw
 from json import load
 from http import HTTPStatus
-import functools
 from markdown import markdown
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, redirect, url_for
 )
 
 # eo8zee
