@@ -11,12 +11,33 @@ from .api import crawl, id_from_url
 bp = Blueprint('app', __name__, url_prefix='/app')
 
 
-def traverse_and_copy(original, translations):
+def traverse_and_copy(comment, translations):
+    cmt = {
+        'author': comment['author'],
+        'points': comment['points'],
+        'text': '',
+        'replies': [],
+        'id': comment['id']
+    }
+    for cmt_id in translations:
+        if cmt_id == f'trans-{cmt["id"]}':
+            cmt['text'] = translations[cmt_id]
+            break
+    if comment['replies']:
+        for reply in comment['replies']:
+            rep = traverse_and_copy(reply, translations)
+            cmt['replies'].append(rep)
+    return cmt
+
+
+def translate_thread(original, translations):
     """This takes the original comment thread and translations
     then output the translated comment thread
     """
     translated_thread = []
-    pass
+    for comment in original:
+        translated_thread.append(traverse_and_copy(comment, translations))
+    return translated_thread
 
 
 @bp.route('/', methods=['GET', 'POST'])
@@ -40,8 +61,11 @@ def translate(post_id):
 def result():
     s = request.args['post_id']
     post = crawl(s)
-    comments = post['comments']  # It's a forest, can be reduced to optimize
-    from flask import jsonify
+    comments = post['comments']
     translations = request.form
-    # TODO: from the comment forest, rebuild post translate
-    return jsonify(comments)
+    return render_template(
+        'app/result.html',
+        comments=translate_thread(comments, translations),
+        post=translations['post-trans'],
+        original=post
+    )

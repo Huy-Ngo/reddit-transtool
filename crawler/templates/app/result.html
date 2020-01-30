@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    Translated post
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div id="meta">
+            r/{{ original['subreddit'] }} <br>
+            Posted by u/{{ original['author'] }} <br>
+            {{ original['points'] }} points <br>
+            Link: https://redd.it/{{ original['id'] }}
+        </div>
+        -----
+        <div>
+            {{ post | safe }}
+        </div>
+        -----
+        <div id="comments">
+            {% for comment in comments recursive %}
+                {% if comment['text'] %}
+                    <div class="comment" id="src-{{ comment.id }}">
+                        {{ loop.depth0 * '>' }} u/{{ comment['author'] }} <br>
+                        {{ comment['text'] | safe }} <br>
+                    </div>
+                    {% if comment.replies %}
+                        <div class="reply">
+                            {{ loop(comment.replies) }}
+                        </div>
+                    {% endif %}
+                    {% if loop.depth == 1 %}
+                        -----
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
