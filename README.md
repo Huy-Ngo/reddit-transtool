@@ -11,10 +11,8 @@ As of now it can crawl the comments of a post and print it out the console.
 ### Set up dependencies
 
 ```bash
-$ python3 setup.py
+$ pip install -r requirements.txt
 ```
-
-For Windows, use `py -3` instead (or `python`, `py` if you don't have Python 2)
 
 ### Run the app locally
 
