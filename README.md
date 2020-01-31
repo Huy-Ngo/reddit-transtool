@@ -21,7 +21,7 @@ For Windows, use `py -3` instead (or `python`, `py` if you don't have Python 2)
 For Linux and Mac:
 
 ```bash
-$ export FLASK_APP=flaskr
+$ export FLASK_APP=crawler
 $ export FLASK_ENV=development
 $ flask run
 ```
@@ -29,7 +29,7 @@ $ flask run
 For Windows cmd:
 
 ```shell
-> set FLASK_APP=flaskr
+> set FLASK_APP=crawler
 > set FLASK_ENV=development
 > flask run
 ```
@@ -37,7 +37,7 @@ For Windows cmd:
 For Windows Powershell:
 
 ```shell
-$env:FLASK_APP=flaskr
+$env:FLASK_APP=crawler
 $env:FLASK_ENV=development
 flask run
 ```
